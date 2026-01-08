@@ -17,12 +17,12 @@ public class BorrowerDetails {
     @Id
     private String id;
     private String uUId;
-    private Integer borrowerId;
+    private String borrowerId;
     private String name;
     private String currencyCode;
     private String classificationCode;
     private LocalDate assessmentDate;
-    private String relationshipManager;
+    private String rmName;
     private String industryCode;
 
 }

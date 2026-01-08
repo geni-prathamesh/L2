@@ -1,10 +1,7 @@
 package com.example.Orr.service.qualitative;
 
 import com.example.Orr.dto.qualitative.BorrowerDetailsDto;
-import com.example.Orr.entity.qualitative.BorrowerDetails;
-import com.example.Orr.entity.qualitative.ClassificationMaster;
-import com.example.Orr.entity.qualitative.CurrencyMaster;
-import com.example.Orr.entity.qualitative.IndustryMaster;
+import com.example.Orr.entity.qualitative.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
@@ -30,7 +27,7 @@ public class BorrowerDetailsServiceImpl implements BorrowerDetailsService {
        borrowerDetailsDto.setName(entity.getName());
        borrowerDetailsDto.setCurrencyCode(entity.getCurrencyCode());
        borrowerDetailsDto.setAssessmentDate(entity.getAssessmentDate());
-       borrowerDetailsDto.setRelationshipManager(entity.getRelationshipManager());
+       borrowerDetailsDto.setRmName(entity.getRmName());
        borrowerDetailsDto.setClassificationCode(entity.getClassificationCode());
        borrowerDetailsDto.setIndustryCode(entity.getIndustryCode());
 
@@ -55,7 +52,7 @@ public class BorrowerDetailsServiceImpl implements BorrowerDetailsService {
         borrowerDetails.setClassificationCode(dto.getClassificationCode());
         borrowerDetails.setAssessmentDate(dto.getAssessmentDate());
         borrowerDetails.setCurrencyCode(dto.getCurrencyCode());
-        borrowerDetails.setRelationshipManager(dto.getRelationshipManager());
+        borrowerDetails.setRmName(dto.getRmName());
         return borrowerDetails;
     }
 
@@ -114,6 +111,17 @@ public class BorrowerDetailsServiceImpl implements BorrowerDetailsService {
             throw new RuntimeException("Invalid industry code");
         }
 
+
+        //Relationship manager
+        Query rmMasterQuery=new Query(
+                Criteria.where("rmName").is(dto.getRmName()).and("active").is(true)
+        );
+
+        RelationshipManagerMaster relationshipManagerMaster=mongoTemplate.findOne(rmMasterQuery,RelationshipManagerMaster.class);
+
+        if(relationshipManagerMaster==null){
+            throw new RuntimeException("Invalid Relationship manager");
+        }
 
 
         BorrowerDetails entity = toEntity(dto);
@@ -177,7 +185,7 @@ public class BorrowerDetailsServiceImpl implements BorrowerDetailsService {
                 .set("currencyCode", borrowerDetailsDto.getCurrencyCode())
                 .set("classificationCode", borrowerDetailsDto.getClassificationCode())
                 .set("assessmentDate", borrowerDetailsDto.getAssessmentDate())
-                .set("relationshipManager", borrowerDetailsDto.getRelationshipManager())
+                .set("rmName", borrowerDetailsDto.getRmName())
                 .set("industryCode", borrowerDetailsDto.getIndustryCode());
 
         mongoTemplate.findAndModify(query, update, BorrowerDetails.class);
@@ -191,7 +199,7 @@ public class BorrowerDetailsServiceImpl implements BorrowerDetailsService {
     }
 
     @Override
-    public BorrowerDetailsDto findByBorrowerId(Integer borrowerId) {
+    public BorrowerDetailsDto findByBorrowerId(String borrowerId) {
         return null;
     }
 }

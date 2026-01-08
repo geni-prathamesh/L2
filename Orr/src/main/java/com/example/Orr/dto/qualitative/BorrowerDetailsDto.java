@@ -9,7 +9,7 @@ import java.time.LocalDate;
 public class BorrowerDetailsDto {
     private String id;
     private String uUId;
-    private Integer borrowerId;
+    private String borrowerId;
     private String name;
     private String currencyCode;
     private String currencyName;
@@ -18,7 +18,11 @@ public class BorrowerDetailsDto {
     private String classificationName;
     private Integer riskWeight;
     private LocalDate assessmentDate;
-    private String relationshipManager;
+    private String rmCode;      // RM001, RM002
+    private String rmName;
+    private String email;
+    private String mobile;
+    private String branch;
     private String industryCode;
     private String industryName;
 }

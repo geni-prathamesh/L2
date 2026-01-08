@@ -18,5 +18,5 @@ public interface BorrowerDetailsService {
     void deleteByUUId(String uUId);
 
     // 🔎 OPTIONAL (legacy / external lookup)
-    BorrowerDetailsDto findByBorrowerId(Integer borrowerId);
+    BorrowerDetailsDto findByBorrowerId(String borrowerId);
 }
